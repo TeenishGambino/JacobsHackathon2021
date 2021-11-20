@@ -6,7 +6,7 @@ ctx.canvas.width = window.innerWidth;
 var front = document.getElementById("front");
 var mid = document.getElementById("mid");
 var back = document.getElementById("back");
-var player = document.getElementById("player");
+var player_img = document.getElementById("player");
 
 var obj_arr = []; // stores every object in the level
 // automatic gets added after creating a level
@@ -20,7 +20,7 @@ class object{ //global object
     }
 }
 class rec extends object{//rectangular things
-    constructor(x,y,v,h,w){
+    constructor(x,y,v,w,h){
         super(x,y,v);
         this.h = h;
         this.w = w;
@@ -55,21 +55,33 @@ function update(){
     ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
     //draw_background(); 
     for(i of obj_arr){
-        i.x += i.v; 
         i.draw();
     }
     document.addEventListener('keypress', foo);
 }
 
 function foo(e){
-    if(e.key == "w"){
+    if(e.key == "w"){//jump
         player.y -= 5;
     }else if(e.key == "a"){
         player.x -= 5;
+        for(i of obj_arr){
+            i.x += 5;
+            i.draw();
+        }
     }else if(e.key == "d"){
         player.x += 5;
+        for(i of obj_arr){
+            i.x -= 5;
+            i.draw();
+        }
     }
 }
 
-var ground = new rec(0,100,0,500,100);
+var ground = new rec(0,100,0,100,500);
+var ground2 = new rec(700,100,0,100,500);
+var player = new rec(100,200,0,50,100);
+for(i of obj_arr){
+    i.draw();
+}
 setInterval(update,1000/30); //set Frames per sec
