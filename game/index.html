@@ -7,7 +7,7 @@
         }
     </style>
 </head>
-<body style ="margin: 0;">
+<body style ="margin: 0;background-image:url(img/stars.png);">
 
 <canvas id = "screen"></canvas>
 
@@ -15,7 +15,7 @@
 var canvas = document.getElementById('screen');
 var ctx = canvas.getContext('2d');
 var hori_speed = 8; //default speed for any horizontal movement
-
+var gameFrame = 0;
 ctx.canvas.height = window.innerHeight;
 ctx.canvas.width = window.innerWidth;
 
@@ -24,27 +24,25 @@ var layers_arr = [];
 
 class layer{
     constructor(img , spd_modifier){
-        this.x = 0;
+        this.x = -200;
         this.img = img;
+        this.width = 2560;
         this.spd_modifier = spd_modifier;
         this.spd = spd_modifier * hori_speed; 
         layers_arr.push(this);
     }
     update(bool){
-        this.x += Math.floor(this.spd * bool);
-        if(this.x <= -this.width){
-            this.x = this.width - this.speed;
-        }
-    }
+       this.x += this.spd * bool;
+    }   
     draw(){
-        ctx.drawImage(this.img, this.x, 50, ctx.canvas.width/2, ctx.canvas.height);
-        ctx.drawImage(this.img, this.x + ctx.canvas.width/2, 50, ctx.canvas.width/2, ctx.canvas.height);
+       ctx.drawImage(this.img, this.x, -200, 2560, 1600);
+       ctx.drawImage(this.img, 0, -200, 2560, 1600);
     }
 }
 
 class rec {//rectangular things
-    constructor(x,y,w,h){
-        //this.img = img;
+    constructor(img,x,y,w,h){
+        this.img = img;
         this.x = x;
         this.y = y;
         this.h = h;
@@ -53,11 +51,10 @@ class rec {//rectangular things
     }
     draw(){
         ctx.fillStyle = 'green';
-        ctx.fillRect(this.x, ctx.canvas.height - this.y, this.w, this.h);
-        //ctx.drawImage(this.img, this.x, ctx.canvas.height - this.y);
+        //ctx.fillRect(this.x, ctx.canvas.height - this.y, this.w, this.h);
+        ctx.drawImage(this.img, this.x, ctx.canvas.height - this.y,this.w,this.h);
     }
 }
-
 function collision(a,b){ // returns 1 if a collides with b
     if(a.x + a.w < b.x || a.x > b.x + b.w){
         // pass if player is not inbetween a.x and a.x + a.w
@@ -74,28 +71,32 @@ function collision(a,b){ // returns 1 if a collides with b
 
 
 var up, right, left = 0;
-
+var abc = 1
 function foo(e){
-    if(e.key == " " || e.key == "w" || e.key == "ArrowUp"){
-        up = 1
-    }
-    if(e.key == "d" || e.key == "ArrowRight"){
-        right = 1;
-    }
-    if (e.key == "a" || e.key == "ArrowLeft"){
-        left = 1;
+    if(abc == 1){
+        if(e.key == " " || e.key == "w" || e.key == "ArrowUp"){
+            up = 1
+        }
+        if(e.key == "d" || e.key == "ArrowRight"){
+            right = 1;
+        }
+        if (e.key == "a" || e.key == "ArrowLeft"){
+            left = 1;
+        }
     }
 }
 
 function boo(e){
-    if(e.key == " " || e.key == "w" || e.key == "ArrowUp"){
-        up = 0;
-    }
-    if(e.key == "d" || e.key == "ArrowRight"){
-        right = 0;
-    }
-    if (e.key == "a"|| e.key == "ArrowLeft"){
-        left = 0;
+    if(abc == 1){
+        if(e.key == " " || e.key == "w" || e.key == "ArrowUp"){
+            up = 0;
+        }
+        if(e.key == "d" || e.key == "ArrowRight"){
+            right = 0;
+        }
+        if (e.key == "a"|| e.key == "ArrowLeft"){
+            left = 0;
+        }
     }
 }
 
