@@ -1,15 +1,107 @@
 <html>
 <head>
     <title>Game</title>
+    <style>
+        canvas{
+            position: absolute;
+        }
+    </style>
 </head>
-<body style ="margin: 0;background-color: black;">
+<body style ="margin: 0;">
+
 <canvas id = "screen"></canvas>
-<div style="display: none;">    
-    <img src ="img/front.png" id = "front">
-    <img src ="img/mid.png" id = "mid">
-    <img src ="img/back.png" id = "back">
-    <img src = "img/player_happy.png" id = "player">
-</div>
+
+<script>
+var canvas = document.getElementById('screen');
+var ctx = canvas.getContext('2d');
+var hori_speed = 8; //default speed for any horizontal movement
+
+ctx.canvas.height = window.innerHeight;
+ctx.canvas.width = window.innerWidth;
+
+var obj_arr = [];
+var layers_arr = [];
+
+class layer{
+    constructor(img , spd_modifier){
+        this.x = 0;
+        this.img = img;
+        this.spd_modifier = spd_modifier;
+        this.spd = spd_modifier * hori_speed; 
+        layers_arr.push(this);
+    }
+    update(bool){
+        this.x += Math.floor(this.spd * bool);
+        if(this.x <= -this.width){
+            this.x = this.width - this.speed;
+        }
+    }
+    draw(){
+        ctx.drawImage(this.img, this.x, 50, ctx.canvas.width/2, ctx.canvas.height);
+        ctx.drawImage(this.img, this.x + ctx.canvas.width/2, 50, ctx.canvas.width/2, ctx.canvas.height);
+    }
+}
+
+class rec {//rectangular things
+    constructor(x,y,w,h,vx = 0, vy = 0){
+        this.x = x;
+        this.y = y;
+        this.vx = vx;
+        this.vy = vy;
+        this.h = h;
+        this.w = w;
+        obj_arr.push(this);
+    }
+    draw(){
+        ctx.fillStyle = 'green';
+        ctx.fillRect(this.x, ctx.canvas.height - this.y, this.w, this.h);
+    }
+}
+
+function collision(a,b){ // returns 1 if a collides with b
+    if(a.x + a.w < b.x || a.x > b.x + b.w){
+        // pass if player is not inbetween a.x and a.x + a.w
+        return 0;
+    }else if(a.y < b.y - b.h || a.y - a.h > b.y){
+        // pass if player is inbetween a.x and a.x + a.w
+        // and if player is not inbetween a.y and a.y - a.h
+        return 0;
+    }
+    // pass if player is inbetween a.x and a.x + a.w
+    // and if player is inbetween a.y and a.y - a.h
+    return 1;
+}
+
+
+var up, right, left = 0;
+
+function foo(e){
+    if(e.key == " " || e.key == "w" || e.key == "ArrowUp"){
+        up = 1
+    }
+    if(e.key == "d"){
+        right = 1;
+    }
+    if (e.key == "a"){
+        left = 1;
+    }
+}
+
+function boo(e){
+    if(e.key == " " || e.key == "w" || e.key == "ArrowUp"){
+        up = 0;
+    }
+    if(e.key == "d"){
+        right = 0;
+    }
+    if (e.key == "a"){
+        left = 0;
+    }
+}
+
+document.addEventListener('keydown', foo);
+document.addEventListener('keyup', boo);
+</script>
 <script src="script/main.js"></script>
 </body>
 </html>
