@@ -43,11 +43,10 @@ class layer{
 }
 
 class rec {//rectangular things
-    constructor(x,y,w,h,vx = 0, vy = 0){
+    constructor(x,y,w,h){
+        //this.img = img;
         this.x = x;
         this.y = y;
-        this.vx = vx;
-        this.vy = vy;
         this.h = h;
         this.w = w;
         obj_arr.push(this);
@@ -55,6 +54,7 @@ class rec {//rectangular things
     draw(){
         ctx.fillStyle = 'green';
         ctx.fillRect(this.x, ctx.canvas.height - this.y, this.w, this.h);
+        //ctx.drawImage(this.img, this.x, ctx.canvas.height - this.y);
     }
 }
 
@@ -79,10 +79,10 @@ function foo(e){
     if(e.key == " " || e.key == "w" || e.key == "ArrowUp"){
         up = 1
     }
-    if(e.key == "d"){
+    if(e.key == "d" || e.key == "ArrowRight"){
         right = 1;
     }
-    if (e.key == "a"){
+    if (e.key == "a" || e.key == "ArrowLeft"){
         left = 1;
     }
 }
@@ -91,10 +91,10 @@ function boo(e){
     if(e.key == " " || e.key == "w" || e.key == "ArrowUp"){
         up = 0;
     }
-    if(e.key == "d"){
+    if(e.key == "d" || e.key == "ArrowRight"){
         right = 0;
     }
-    if (e.key == "a"){
+    if (e.key == "a"|| e.key == "ArrowLeft"){
         left = 0;
     }
 }
